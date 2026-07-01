@@ -12,7 +12,7 @@ if ($azure) {
 }else {
     Connect-AzAccount
 }
-
+cls
 $fqdn = Get-AzKeyVaultSecret -VaultName $vault -Name "FQDN" -AsPlainText
 $cwchost = Get-AzKeyVaultSecret -VaultName $vault -Name "Host" -AsPlainText
 $port = Get-AzKeyVaultSecret -VaultName $vault -Name "Port" -AsPlainText
@@ -33,3 +33,5 @@ else {
     $WebClient.DownloadFile($DownloadURL, $InstallerPath)
     Start-Process $InstallerPath -wait -ArgumentList '/qn /norestart' -PassThru
 } 
+cls
+Write-Host "ScreenConnect has been installed successfully. Please Check for $env:COMPUTERNAME under $clientRaw in ScreenConnect."
