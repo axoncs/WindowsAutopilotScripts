@@ -9,8 +9,6 @@ $autoPilotDevice = Get-MgBetaDeviceManagementWindowsAutopilotDeviceIdentity -All
 while ($autoPilotDevice.DeploymentProfileAssignmentStatus -notin "assignedInSync", "assignedOutOfSync", "assignedUnkownSyncState") {
     Write-Host "Device is not assigned yet"
 }
-else {
-	[Console]::Clear()
-	Write-Host "Device has been assigned, Rebooting now"
-    Reboot-Computer
-}
+[Console]::Clear()
+Write-Host "Device has been assigned, Rebooting now"
+Reboot-Computer
