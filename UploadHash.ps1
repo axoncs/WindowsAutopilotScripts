@@ -1,3 +1,3 @@
-set-executionpolicy bypass
-install-script get-windowsautopilotinfo -force
+Set-ExecutionPolicy Unrestricted
+install-script get-windowsautopilotinfo -Force -AcceptLicense
 get-windowsautopilotinfo -online
