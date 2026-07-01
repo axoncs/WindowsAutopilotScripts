@@ -1,9 +1,8 @@
 # Load module
-if (Get-Module -ListAvailable -Name Az.Accounts, Az.KeyVault) {
-    Import-Module -Name Az.Accounts, Az.KeyVault
-}else {
-    Install-Module -Name Az.Accounts, Az.KeyVault -AllowClobber -Scope CurrentUser -Force
-}
+Install-PackageProvider NuGet -Force;
+Set-PSRepository PSGallery -InstallationPolicy Trusted
+Install-Module -Name Az.Accounts, Az.KeyVault -AllowClobber -Force
+
 $vault = "AxonSCVault"
 $azure = Get-AzKeyVault -Name $vault -ErrorAction SilentlyContinue
 if ($azure) {
