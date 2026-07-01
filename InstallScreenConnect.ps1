@@ -19,12 +19,12 @@ $key = Get-AzKeyVaultSecret -VaultName $vault -Name "Key" -AsPlainText
 $clientRaw = Read-Host -Prompt "Enter Client's Name"
 $client = [uri]::EscapeDataString($clientRaw)
 
-if(($clientRaw -eq "") -or ($clientRaw -eq $null)) {
+if(($client -eq "") -or ($client -eq $null)) {
     Write-Output "ERROR: The client's name was not provided, skipping ScreenConnect installation."
 }
 
 else {    
-    $InstallerName = "ConnectWiseControl.ClientSetup.msi"
+    $InstallerName = "ScreenConnect.ClientSetup.msi"
     $InstallerPath = Join-Path $Env:TMP $InstallerName
     $DownloadURL = "https://" + $fqdn + "/Bin/ScreenConnect.ClientSetup.msi?h=" + $cwchost + "&p=" + $port + "&k=" + $key + "&e=Access&y=Guest&t=&c=" + $client + "&c=&c=&c=&c=&c=&c=&c="
     [Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
