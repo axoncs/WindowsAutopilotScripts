@@ -1,5 +1,5 @@
 # Load module
-Install-PackageProvider NuGet -Force;
+Install-PackageProvider NuGet -Force
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 Install-Module -Name Az.Accounts, Az.KeyVault -AllowClobber -Force
 
