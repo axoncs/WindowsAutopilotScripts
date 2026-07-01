@@ -5,11 +5,12 @@ get-windowsautopilotinfo -online
 
 $autopilotInfo = get-windowsautopilotinfo
 $autoPilotDevice = Get-MgBetaDeviceManagementWindowsAutopilotDeviceIdentity -All | Where-Object SerialNumber -eq $autopilotInfo."Device Serial Number"
+$assignmentStatus = $autoPilotDevice.DeploymentProfileAssignmentStatus
 [Console]::Clear()
-while ($autoPilotDevice.DeploymentProfileAssignmentStatus -notin "assignedInSync", "assignedOutOfSync", "assignedUnkownSyncState") {
-    Write-Host "Device is not assigned yet"
+while ($assignmentStatus -notin "assignedInSync", "assignedOutOfSync", "assignedUnkownSyncState") {
+    Write-Host "Device is not assigned yet..."
+    $assignmentStatus = Get-MgBetaDeviceManagementWindowsAutopilotDeviceIdentity -WindowsAutopilotDeviceIdentityId $autoPilotDevice.ID
 }
-pause
 [Console]::Clear()
 Write-Host "Device has been assigned, Rebooting now"
 Restart-Computer
