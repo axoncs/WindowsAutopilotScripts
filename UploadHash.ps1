@@ -2,7 +2,8 @@ Set-ExecutionPolicy Unrestricted
 Install-Module Microsoft.Graph.Beta.DeviceManagement.Enrollment -force
 install-script get-windowsautopilotinfo -Force
 get-windowsautopilotinfo -online
-$allowedAssignmentStatuses = @("assignedInSync", "assignedOutOfSync", "assignedUnkownSyncState")
+#adding both assignedUnkownSyncState and assignedUnknownSyncState in case M$ fixes the spelling one day REF: https://learn.microsoft.com/en-us/graph/api/resources/intune-enrollment-windowsautopilotprofileassignmentstatus?view=graph-rest-beta
+$allowedAssignmentStatuses = @("assignedInSync", "assignedOutOfSync", "assignedUnknownSyncState", "assignedUnkownSyncState")
 $autoPilotInfo = get-windowsautopilotinfo
 while (($assignmentStatus -eq "") -or ($assignmentStatus -eq $null)) {
     $autoPilotDevice = Get-MgBetaDeviceManagementWindowsAutopilotDeviceIdentity -All | Where-Object SerialNumber -eq $autoPilotInfo."Device Serial Number"
