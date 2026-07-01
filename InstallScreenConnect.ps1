@@ -1,0 +1,34 @@
+# Load module
+if (Get-Module -ListAvailable -Name Az.Accounts, Az.KeyVault) {
+    Import-Module -Name Az.Accounts, Az.KeyVault
+}else {
+    Install-Module -Name Az.Accounts, Az.KeyVault -AllowClobber -Scope CurrentUser -Force
+}
+$vault = "AxonSCVault"
+$azure = Get-AzKeyVault -Name $vault -ErrorAction SilentlyContinue
+if ($azure) {
+	write-host "Already Logged into Azure. Using account"$azure.Account
+}else {
+    Connect-AzAccount
+}
+
+$fqdn = Get-AzKeyVaultSecret -VaultName $vault -Name "FQDN" -AsPlainText
+$cwchost = Get-AzKeyVaultSecret -VaultName $vault -Name "Host" -AsPlainText
+$port = Get-AzKeyVaultSecret -VaultName $vault -Name "Port" -AsPlainText
+$key = Get-AzKeyVaultSecret -VaultName $vault -Name "Key" -AsPlainText
+$clientRaw = Read-Host -Prompt "Enter Client's Name"
+$client = [uri]::EscapeDataString($clientRaw)
+
+if(($Client -eq $null)) {
+    Write-Output "ERROR: The client's name was not provided, skipping ScreenConnect installation."
+}
+
+else {    
+    $InstallerName = "ConnectWiseControl.ClientSetup.msi"
+    $InstallerPath = Join-Path $Env:TMP $InstallerName
+    $DownloadURL = "https://" + $fqdn + "/Bin/ScreenConnect.ClientSetup.msi?h=" + $cwchost + "&p=" + $port + "&k=" + $key + "&e=Access&y=Guest&t=&c=" + $client + "&c=&c=&c=&c=&c=&c=&c="
+    [Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
+    $WebClient = New-Object System.Net.WebClient
+    $WebClient.DownloadFile($DownloadURL, $InstallerPath)
+    Start-Process $InstallerPath -wait -ArgumentList '/qn /norestart' -PassThru
+} 
