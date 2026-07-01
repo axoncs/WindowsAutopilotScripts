@@ -12,7 +12,7 @@ if ($azure) {
 }else {
     Connect-AzAccount
 }
-cls
+[Console]::Clear()
 $fqdn = Get-AzKeyVaultSecret -VaultName $vault -Name "FQDN" -AsPlainText
 $cwchost = Get-AzKeyVaultSecret -VaultName $vault -Name "Host" -AsPlainText
 $port = Get-AzKeyVaultSecret -VaultName $vault -Name "Port" -AsPlainText
@@ -21,7 +21,7 @@ $clientRaw = Read-Host -Prompt "Enter Client's Name"
 $client = [uri]::EscapeDataString($clientRaw)
 
 if(($client -eq "") -or ($client -eq $null)) {
-    Write-Output "ERROR: The client's name was not provided, skipping ScreenConnect installation."
+    Write-Host "ERROR: The client's name was not provided, skipping ScreenConnect installation."
 }
 
 else {    
@@ -33,5 +33,5 @@ else {
     $WebClient.DownloadFile($DownloadURL, $InstallerPath)
     Start-Process $InstallerPath -wait -ArgumentList '/qn /norestart' -PassThru
 } 
-cls
+[Console]::Clear()
 Write-Host "ScreenConnect has been installed successfully. Please Check for $env:COMPUTERNAME under $clientRaw in ScreenConnect."
