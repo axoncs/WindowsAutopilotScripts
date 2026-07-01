@@ -1,8 +1,10 @@
-# Load module
+#Set Execution Policy
+Set-ExecutionPolicy Unrestricted
+# Install modules
 Install-PackageProvider NuGet -Force
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 Install-Module -Name Az.Accounts, Az.KeyVault -AllowClobber -Force
-
+#
 $vault = "AxonSCVault"
 $azure = Get-AzKeyVault -Name $vault -ErrorAction SilentlyContinue
 if ($azure) {
