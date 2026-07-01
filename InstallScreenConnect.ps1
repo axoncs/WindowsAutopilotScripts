@@ -19,7 +19,7 @@ $key = Get-AzKeyVaultSecret -VaultName $vault -Name "Key" -AsPlainText
 $clientRaw = Read-Host -Prompt "Enter Client's Name"
 $client = [uri]::EscapeDataString($clientRaw)
 
-if(($Client -eq $null)) {
+if(($clientRaw -eq "") -or ($clientRaw -eq $null)) {
     Write-Output "ERROR: The client's name was not provided, skipping ScreenConnect installation."
 }
 
