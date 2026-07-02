@@ -2,6 +2,17 @@
 IF([Net.SecurityProtocolType]::Tls12) {[Net.ServicePointManager]::SecurityProtocol=[Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12}
 #Set Execution Policy
 Set-ExecutionPolicy Unrestricted
+# Install Package provider
+$nugetProvider = Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue
+if ($nugetProvider -eq $null) {
+    Write-Host "NuGet provider not found. Installing..." -ForegroundColor Yellow
+    Install-PackageProvider -Name NuGet -Force -Confirm:$false -ForceBootstrap
+    Write-Host "NuGet provider installed successfully." -ForegroundColor Green
+} else {
+    Write-Host "NuGet provider is already installed (Version: $($nugetProvider.Version))." -ForegroundColor Green
+}
+# Set PSGallery as a trusted repository
+Set-PSRepository PSGallery -InstallationPolicy Trusted
 # Install modules
 $RequiredModules = @("Az.Accounts", "Az.KeyVault", "WindowsAutopilotIntune", "Microsoft.Graph.Beta.DeviceManagement.Enrollment")
 foreach ($Module in $RequiredModules) {
