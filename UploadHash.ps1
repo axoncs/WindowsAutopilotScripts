@@ -1,5 +1,13 @@
 Set-ExecutionPolicy Unrestricted
-Install-Module Microsoft.Graph.Beta.DeviceManagement.Enrollment -force
+$RequiredModules = @("Microsoft.Graph.Beta.DeviceManagement.Enrollment", "WindowsAutopilotIntune", "AzureAD")
+foreach ($Module in $RequiredModules) {
+    if (-not (Get-Module -Name $Module -ListAvailable)) {
+        Write-Host "Module '$Module' is missing. Installing now..." -ForegroundColor Yellow
+        Install-Module -Name $Module -Force -AllowClobber
+    } else {
+        Write-Host "Module '$Module' is already installed." -ForegroundColor Green
+    }
+}
 install-script get-windowsautopilotinfo -Force
 get-windowsautopilotinfo -online
 #adding both assignedUnkownSyncState and assignedUnknownSyncState in case M$ fixes the spelling one day REF: https://learn.microsoft.com/en-us/graph/api/resources/intune-enrollment-windowsautopilotprofileassignmentstatus?view=graph-rest-beta
