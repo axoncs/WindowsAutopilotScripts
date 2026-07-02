@@ -1,5 +1,5 @@
 Set-ExecutionPolicy Unrestricted
-$RequiredModules = @("Microsoft.Graph.Beta.DeviceManagement.Enrollment", "WindowsAutopilotIntune", "AzureAD")
+$RequiredModules = @("Microsoft.Graph.Beta.DeviceManagement.Enrollment", "WindowsAutopilotIntune")
 foreach ($Module in $RequiredModules) {
     if (-not (Get-Module -Name $Module -ListAvailable)) {
         Write-Host "Module '$Module' is missing. Installing now..." -ForegroundColor Yellow
