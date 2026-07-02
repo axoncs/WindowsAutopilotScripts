@@ -1,4 +1,8 @@
+# Set TLS 1.2 as the default security protocol
+IF([Net.SecurityProtocolType]::Tls12) {[Net.ServicePointManager]::SecurityProtocol=[Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12}
+#Set Execution Policy
 Set-ExecutionPolicy Unrestricted
+# Install modules
 $RequiredModules = @("Microsoft.Graph.Beta.DeviceManagement.Enrollment", "WindowsAutopilotIntune")
 foreach ($Module in $RequiredModules) {
     if (-not (Get-Module -Name $Module -ListAvailable)) {

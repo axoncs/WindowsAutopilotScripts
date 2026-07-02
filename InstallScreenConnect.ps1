@@ -1,5 +1,5 @@
 # Set TLS 1.2 as the default security protocol
-[Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
+IF([Net.SecurityProtocolType]::Tls12) {[Net.ServicePointManager]::SecurityProtocol=[Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12}
 #Set Execution Policy
 Set-ExecutionPolicy Unrestricted
 # Install Package provider
@@ -14,7 +14,7 @@ if ($nugetProvider -eq $null) {
 # Set PSGallery as a trusted repository
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 # Install modules
-$RequiredModules = @("Az.Accounts", "Az.KeyVault", "PowerShellGet")
+$RequiredModules = @("Az.Accounts", "Az.KeyVault")
 foreach ($Module in $RequiredModules) {
     if (-not (Get-Module -Name $Module -ListAvailable)) {
         Write-Host "Module '$Module' is missing. Installing now..." -ForegroundColor Yellow

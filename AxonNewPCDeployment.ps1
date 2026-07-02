@@ -1,3 +1,17 @@
+# Set TLS 1.2 as the default security protocol
+IF([Net.SecurityProtocolType]::Tls12) {[Net.ServicePointManager]::SecurityProtocol=[Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12}
+#Set Execution Policy
+Set-ExecutionPolicy Unrestricted
+# Install modules
+$RequiredModules = @("Az.Accounts", "Az.KeyVault", "WindowsAutopilotIntune", "Microsoft.Graph.Beta.DeviceManagement.Enrollment")
+foreach ($Module in $RequiredModules) {
+    if (-not (Get-Module -Name $Module -ListAvailable)) {
+        Write-Host "Module '$Module' is missing. Installing now..." -ForegroundColor Yellow
+        Install-Module -Name $Module -Force -AllowClobber
+    } else {
+        Write-Host "Module '$Module' is already installed." -ForegroundColor Green
+    }
+}
 $appVersion ="0.1"
 $serialNumber = (Get-CimInstance Win32_BIOS | Select-Object SerialNumber).SerialNumber
 $logo=@"
