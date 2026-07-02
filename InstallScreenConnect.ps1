@@ -1,6 +1,15 @@
 #Set Execution Policy
 Set-ExecutionPolicy Unrestricted
 Set-PSRepository PSGallery -InstallationPolicy Trusted
+# Install Package provider
+$nugetProvider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
+if ($null -eq $nugetProvider) {
+    Write-Host "NuGet provider not found. Installing..." -ForegroundColor Yellow
+    Install-PackageProvider -Name NuGet -Force -Confirm:$false -ForceBootstrap
+    Write-Host "NuGet provider installed successfully." -ForegroundColor Green
+} else {
+    Write-Host "NuGet provider is already installed (Version: $($nugetProvider.Version))." -ForegroundColor Green
+}
 # Install modules
 $RequiredModules = @("Az.Accounts", "Az.KeyVault", "AzureAD", "PowerShellGet")
 foreach ($Module in $RequiredModules) {
@@ -10,15 +19,6 @@ foreach ($Module in $RequiredModules) {
     } else {
         Write-Host "Module '$Module' is already installed." -ForegroundColor Green
     }
-}
-# Install Package provider
-$nugetProvider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
-if ($null -eq $nugetProvider) {
-    Write-Host "NuGet provider not found. Installing..." -ForegroundColor Yellow
-    Install-PackageProvider -Name NuGet -Force -Confirm:$false -ForceBootstrap
-    Write-Host "NuGet provider installed successfully." -ForegroundColor Green
-} else {
-    Write-Host "NuGet provider is already installed (Version: $($nugetProvider.Version))." -ForegroundColor Green
 }
 #
 $vault = "AxonSCVault"
