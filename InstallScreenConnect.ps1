@@ -14,7 +14,7 @@ if ($nugetProvider -eq $null) {
 # Set PSGallery as a trusted repository
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 # Install modules
-$RequiredModules = @("Az.Accounts", "Az.KeyVault", "AzureAD", "PowerShellGet")
+$RequiredModules = @("Az.Accounts", "Az.KeyVault", "PowerShellGet")
 foreach ($Module in $RequiredModules) {
     if (-not (Get-Module -Name $Module -ListAvailable)) {
         Write-Host "Module '$Module' is missing. Installing now..." -ForegroundColor Yellow
