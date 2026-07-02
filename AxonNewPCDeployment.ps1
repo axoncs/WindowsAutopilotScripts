@@ -46,10 +46,12 @@ $logo=@"
 [Console]::Clear()
 Write-Host $logo -ForegroundColor Cyan
 write-host "Deploying ScreenConnect to $env:COMPUTERNAME. Please login next with your Axon Azure Account to begin the Installation Process."
-iex (irm a.xon.ac/sc)
+#Launching in a separate powershell window to avoid issues with loaded modules conflicting"
+powershell -Command "iex (irm a.xon.ac/sc)"
 Write-Host "You can now connect via ScreenConnect."
 pause
 [Console]::Clear()
 Write-Host $logo -ForegroundColor Cyan
 write-host "Uploading details for $env:COMPUTERNAME to AutoPilot. Please login next with the tenant admin, or an account with sufficient privileges to begin the process."
-iex (irm a.xon.ac/1)
+#Launching in a separate powershell window to avoid issues with loaded modules conflicting"
+powershell -Command "iex (irm a.xon.ac/1)"
