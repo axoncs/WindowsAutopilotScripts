@@ -10,6 +10,7 @@ foreach ($Module in $RequiredModules) {
         Install-Module -Name $Module -Force -AllowClobber
     } else {
         Write-Host "Module '$Module' is already installed." -ForegroundColor Green
+        Import-Module $Module
     }
 }
 install-script get-windowsautopilotinfo -Force
