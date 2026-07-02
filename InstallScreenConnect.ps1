@@ -1,8 +1,7 @@
-# 
+# Set TLS 1.2 as the default security protocol
 [Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
 #Set Execution Policy
 Set-ExecutionPolicy Unrestricted
-Set-PSRepository PSGallery -InstallationPolicy Trusted
 # Install Package provider
 $nugetProvider = Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue
 if ($nugetProvider -eq $null) {
@@ -12,6 +11,8 @@ if ($nugetProvider -eq $null) {
 } else {
     Write-Host "NuGet provider is already installed (Version: $($nugetProvider.Version))." -ForegroundColor Green
 }
+# Set PSGallery as a trusted repository
+Set-PSRepository PSGallery -InstallationPolicy Trusted
 # Install modules
 $RequiredModules = @("Az.Accounts", "Az.KeyVault", "AzureAD", "PowerShellGet")
 foreach ($Module in $RequiredModules) {
