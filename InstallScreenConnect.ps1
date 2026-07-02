@@ -1,3 +1,5 @@
+# 
+[Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
 #Set Execution Policy
 Set-ExecutionPolicy Unrestricted
 Set-PSRepository PSGallery -InstallationPolicy Trusted
@@ -44,7 +46,6 @@ else {
     $InstallerName = "ScreenConnect.ClientSetup.msi"
     $InstallerPath = Join-Path $Env:TMP $InstallerName
     $DownloadURL = "https://" + $fqdn + "/Bin/ScreenConnect.ClientSetup.msi?h=" + $cwchost + "&p=" + $port + "&k=" + $key + "&e=Access&y=Guest&t=&c=" + $client + "&c=&c=&c=&c=&c=&c=&c="
-    [Net.ServicePointManager]::SecurityProtocol = [Enum]::ToObject([Net.SecurityProtocolType], 3072)
     $WebClient = New-Object System.Net.WebClient
     $WebClient.DownloadFile($DownloadURL, $InstallerPath)
     Start-Process $InstallerPath -wait -ArgumentList '/qn /norestart' -PassThru
